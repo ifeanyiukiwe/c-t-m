@@ -8,7 +8,8 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
 
   const inputRef = useRef(null);
-  const API_URL = "http://localhost:5000/tasks";
+  const API_URL = "https://c-t-m-nbc5.vercel.app/tasks";
+  // const API_URL = "http://localhost:5000/tasks";
 
   // Fetch tasks from backend on load
   useEffect(() => {
