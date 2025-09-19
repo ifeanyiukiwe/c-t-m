@@ -147,6 +147,46 @@
 //   })
 //   .catch((err) => console.error("MongoDB connection error:", err));
 
+// import express from "express";
+// import mongoose from "mongoose";
+// import dotenv from "dotenv";
+// import cors from "cors";
+
+// import taskRoutes from "./routes/tasks.js";
+// import authRoutes from "./routes/auth.js";
+
+// dotenv.config();
+// const app = express();
+
+// // ✅ CORS setup for production frontend
+// app.use(
+//   cors({
+//     origin: ["https://c-t-m-sepia.vercel.app/"], // replace with your Vercel URL
+//     credentials: true,
+//   })
+// );
+
+// app.use(express.json());
+
+// // Routes
+// app.use("/tasks", taskRoutes);
+// app.use("/auth", authRoutes);
+
+// // Test route
+// app.get("/", (req, res) => res.send("Backend is running!"));
+
+// const PORT = process.env.PORT || 5000;
+
+// mongoose
+//   .connect(process.env.MONGODB_URI)
+//   .then(() => {
+//     console.log("Connected to MongoDB Atlas");
+//     app.listen(PORT, () =>
+//       console.log(`Server running on http://localhost:${PORT}`)
+//     );
+//   })
+//   .catch((err) => console.error("MongoDB connection error:", err));
+
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -158,31 +198,36 @@ import authRoutes from "./routes/auth.js";
 dotenv.config();
 const app = express();
 
-// ✅ CORS setup for production frontend
+// ✅ CORS setup for your Vercel frontend
 app.use(
   cors({
-    origin: ["https://c-t-m-sepia.vercel.app/"], // replace with your Vercel URL
+    origin: "https://c-t-m-sepia.vercel.app", // your Vercel frontend URL (no trailing slash)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
+// Handle preflight requests
+app.options("*", cors());
+
+// Middleware
 app.use(express.json());
 
 // Routes
-app.use("/tasks", taskRoutes);
 app.use("/auth", authRoutes);
+app.use("/tasks", taskRoutes);
 
 // Test route
 app.get("/", (req, res) => res.send("Backend is running!"));
 
+// Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB Atlas");
-    app.listen(PORT, () =>
-      console.log(`Server running on http://localhost:${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => console.error("MongoDB connection error:", err));
