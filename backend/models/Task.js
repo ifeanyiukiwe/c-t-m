@@ -23,14 +23,50 @@
 
 // export default mongoose.model("Task", taskSchema);
 
+// import mongoose from "mongoose";
+
+// const taskSchema = new mongoose.Schema(
+//   {
+//     title: { type: String, required: true },
+//     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+//     completed: {
+//       type: Boolean,
+//       default: false,
+//     },
+//     dueTime: {
+//       type: String, // optional for future step
+//     },
+//   },
+//   { timestamps: true }
+// );
+
+// export default mongoose.model("Task", taskSchema);
+
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema(
   {
-    title: { type: String, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    title: {
+      type: String,
+      required: [true, "Task title is required"],
+      trim: true,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+    dueTime: {
+      type: String, // Optional (e.g., "14:30")
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 export default mongoose.model("Task", taskSchema);
